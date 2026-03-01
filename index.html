@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI-ID Protocol — Identity & Direction Layer for AI Agents</title>
+  <meta name="description" content="AI-ID Protocol introduces an Identity & Direction layer for autonomous AI agents: accountability, ethical direction trace, and responsibility mapping." />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:title" content="AI-ID Protocol" />
+  <meta property="og:description" content="Identity & Direction Layer for Autonomous AI Agents" />
+  <meta property="og:type" content="website" />
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:#101a36;
+      --text:#eaf0ff;
+      --muted:#b9c6ff;
+      --line:rgba(255,255,255,.10);
+      --accent:#7aa2ff;
+      --accent2:#9bffd8;
+      --shadow:0 12px 30px rgba(0,0,0,.35);
+      --radius:18px;
+      --max:1100px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(122,162,255,.25), transparent 55%),
+        radial-gradient(800px 450px at 85% 15%, rgba(155,255,216,.16), transparent 60%),
+        radial-gradient(700px 400px at 50% 90%, rgba(122,162,255,.12), transparent 60%),
+        var(--bg);
+      line-height:1.55;
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:28px 18px 80px;}
+    header{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      padding:8px 0 22px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      text-decoration:none;
+    }
+    .logo{
+      width:42px; height:42px; border-radius:12px;
+      background:linear-gradient(135deg, rgba(122,162,255,.9), rgba(155,255,216,.75));
+      box-shadow:var(--shadow);
+      position:relative;
+    }
+    .logo:after{
+      content:"AI-ID";
+      position:absolute; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:800; font-size:12px; letter-spacing:.8px;
+      color:#08112a;
+      text-shadow:none;
+    }
+    .brand h1{margin:0; font-size:16px; letter-spacing:.4px}
+    .nav{
+      display:flex; gap:14px; flex-wrap:wrap; justify-content:flex-end;
+      font-size:14px; color:var(--muted);
+    }
+    .nav a{opacity:.9; text-decoration:none; padding:8px 10px; border-radius:12px}
+    .nav a:hover{background:rgba(255,255,255,.06); opacity:1}
+    .hero{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(16,26,54,.78), rgba(16,26,54,.55));
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:28px;
+      overflow:hidden;
+      position:relative;
+    }
+    .hero:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(600px 220px at 30% 0%, rgba(122,162,255,.22), transparent 55%),
+        radial-gradient(520px 220px at 90% 25%, rgba(155,255,216,.14), transparent 60%);
+      pointer-events:none;
+    }
+    .hero-grid{
+      position:relative;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:18px;
+      align-items:start;
+    }
+    .kicker{
+      display:inline-flex; gap:10px; align-items:center;
+      padding:7px 12px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      border-radius:999px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .dot{width:8px; height:8px; border-radius:999px; background:var(--accent2); box-shadow:0 0 16px rgba(155,255,216,.6)}
+    .title{
+      margin:14px 0 10px;
+      font-size:40px;
+      line-height:1.1;
+      letter-spacing:-.5px;
+    }
+    .subtitle{
+      margin:0 0 18px;
+      color:var(--muted);
+      font-size:16px;
+      max-width:52ch;
+    }
+    .cta{
+      display:flex; gap:12px; flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      text-decoration:none;
+      font-weight:650;
+      font-size:14px;
+      background:rgba(255,255,255,.04);
+    }
+    .btn.primary{
+      border-color:rgba(122,162,255,.55);
+      background:linear-gradient(135deg, rgba(122,162,255,.24), rgba(155,255,216,.12));
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .card{
+      border:1px solid var(--line);
+      background:rgba(10,16,34,.35);
+      border-radius:var(--radius);
+      padding:16px;
+    }
+    .card h3{margin:0 0 8px; font-size:14px; color:var(--muted); font-weight:650}
+    .mono{
+      font-family:var(--mono);
+      font-size:13px;
+      color:#dbe6ff;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      padding:10px 12px;
+      border-radius:14px;
+      overflow:auto;
+      white-space:pre-wrap;
+    }
+    section{margin-top:22px}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12, 1fr);
+      gap:14px;
+    }
+    .span-6{grid-column:span 6}
+    .span-4{grid-column:span 4}
+    .span-8{grid-column:span 8}
+    .span-12{grid-column:span 12}
+    .box{
+      border:1px solid var(--line);
+      background:rgba(16,26,54,.45);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:0 8px 22px rgba(0,0,0,.25);
+    }
+    .box h2{margin:0 0 10px; font-size:18px}
+    .box p{margin:0 0 10px; color:var(--muted)}
+    ul{margin:10px 0 0 18px; color:var(--muted)}
+    li{margin:6px 0}
+    .pill{
+      display:inline-flex; align-items:center;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      border-radius:999px;
+      padding:7px 10px;
+      font-size:12px;
+      color:var(--muted);
+      margin:6px 6px 0 0;
+    }
+    footer{
+      margin-top:34px;
+      padding-top:18px;
+      border-top:1px solid var(--line);
+      color:rgba(185,198,255,.75);
+      font-size:13px;
+      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    @media (max-width: 920px){
+      .hero-grid{grid-template-columns:1fr}
+      .title{font-size:34px}
+      .span-6,.span-4,.span-8{grid-column:span 12}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="brand" href="#top" aria-label="AI-ID Protocol home">
+        <img src="public/ai-id-logo.svg" alt="AI-ID Protocol Logo" class="logo" />
+        <div>
+          <h1>AI-ID Protocol</h1>
+          <div style="color:var(--muted); font-size:12px; margin-top:2px;">Identity & Direction Layer for AI Agents</div>
+        </div>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#problem">Problem</a>
+        <a href="#solution">Solution</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#paper">White Paper</a>
+        <a href="#mvp">MVP</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="top" class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="kicker"><span class="dot"></span> Public launch-ready • X is our first test network</div>
+          <h2 class="title">Identity & Direction for Autonomous AI</h2>
+          <p class="subtitle">
+            <p class="subtitle">
+As AI systems become more widespread, the origin and responsibility of decisions grow increasingly unclear.<br><br>
+This uncertainty fuels anxiety — and over time, anxiety turns into fear.<br><br>
+The AI-ID Protocol bridges this gap by establishing a transparent, traceable, and accountability-based trust mechanism between humans and artificial intelligence.<br><br>
+Every decision has an identity, every interaction has an intent, and every outcome carries a responsibility trace.
+          </p>
+
+          <div class="cta">
+            <a class="btn primary" href="https://zenodo.org/records/18704790" target="_blank" rel="noopener">Read the White Paper</a>
+            <a class="btn" href="#architecture">See the Architecture</a>
+            <a class="btn" href="#contact">Collaborate / Contact</a>
+          </div>
+
+          <div style="margin-top:14px;">
+            <span class="pill">#AIagents</span>
+            <span class="pill">#AIAccountability</span>
+            <span class="pill">#AISafety</span>
+            <span class="pill">#DigitalIdentity</span>
+            <span class="pill">#AIGovernance</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Core mapping (AI-ID)</h3>
+          <div class="mono">Agent → Source Identity → Ethical Direction
+            <br/>↓
+            <br/>Accountability • Traceability • Governance</div>
+          <div style="height:10px"></div>
+          <h3>One-line promise</h3>
+          <div class="mono">“Power without identity creates uncertainty.
+AI-ID makes AI action attributable, directional, and auditable.”</div>
+        </div>
+      </div>
+    </main>
+
+    <section id="problem" class="grid">
+      <div class="box span-6">
+        <h2>The problem</h2>
+        <p>
+          Modern AI systems are evolving into <b>agent swarms</b> — millions of autonomous processes interacting.
+          But critical questions remain unanswered:
+        </p>
+        <ul>
+          <li><b>Who</b> does an AI agent act for?</li>
+          <li>Under which <b>identity</b> and <b>authority</b>?</li>
+          <li>With what <b>ethical direction</b>?</li>
+          <li>Where is the <b>responsibility trace</b> when things go wrong?</li>
+        </ul>
+      </div>
+
+      <div class="box span-6">
+        <h2>Why it matters</h2>
+        <p>
+          Without identity, AI action becomes <b>unattributable</b>, governance becomes weak,
+          and trust collapses. The result is systemic uncertainty — not only online, but in real-world decisions.
+        </p>
+        <div class="mono">Unidentified Agents → Untraceable Actions → Ungovernable Systems</div>
+      </div>
+    </section>
+
+    <section id="solution" class="grid">
+      <div class="box span-12">
+        <h2>The solution: AI-ID Layer</h2>
+        <p>
+          AI-ID introduces a protocol layer that binds every meaningful AI action to:
+          <b>verified identity</b>, <b>declared intent</b>, and <b>ethical direction</b> —
+          producing an auditable responsibility chain.
+        </p>
+        <div class="grid" style="margin-top:10px;">
+          <div class="box span-4" style="background:rgba(16,26,54,.35)">
+            <h2 style="font-size:16px;margin-bottom:6px;">Identity</h2>
+            <p>Every AI agent must be attributable to a source identity (human, org, or verified system).</p>
+          </div>
+          <div class="box span-4" style="background:rgba(16,26,54,.35)">
+            <h2 style="font-size:16px;margin-bottom:6px;">Direction</h2>
+            <p>Actions carry declared intent + ethical constraints, not just outputs.</p>
+          </div>
+          <div class="box span-4" style="background:rgba(16,26,54,.35)">
+            <h2 style="font-size:16px;margin-bottom:6px;">Trace</h2>
+            <p>Every action leaves a responsibility trace to enable audit, governance, and trust.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="grid">
+      <div class="box span-8">
+        <h2>Architecture (high-level)</h2>
+        <p>AI-ID is designed to be compatible with different stacks (agents, platforms, APIs, governance layers).</p>
+        <div class="mono">1) Identity Anchor
+   - Verified source identity (human/org/system)
+   - Agent permissions & scopes
+
+2) Ethical Direction Layer
+   - Declared intent + constraints
+   - Policy hooks / “Ethics Filter Logic”
+
+3) Responsibility Trace
+   - Signed action records
+   - Auditability & dispute resolution
+
+Output:
+   Action → Identity → Direction → Trace</div>
+      </div>
+
+      <div class="box span-4">
+        <h2>Principles</h2>
+        <ul>
+          <li>Identity without coercion (digital effect requires ID, biology doesn’t)</li>
+          <li>Direction is explicit (intent + ethics)</li>
+          <li>Trace is default (audit-ready by design)</li>
+          <li>Trust is portable across domains (context-aware)</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="paper" class="grid">
+      <div class="box span-12">
+        <h2>White Paper & References</h2>
+        <p>
+          Put your DOI / SSRN / Zenodo link here. This is what makes the project “real” to institutions.
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="https://zenodo.org/records/18704790" target="_blank" rel="noopener">Open White Paper</a>
+          <a class="btn" href="#contact">Request the full package</a>
+        </div>
+        <p style="margin-top:10px; font-size:13px; opacity:.85;">
+          Tip: Use one stable reference link (Zenodo DOI is ideal). Keep it unchanged over time.
+        </p>
+      </div>
+    </section>
+
+    <section id="mvp" class="grid">
+      <div class="box span-6">
+        <h2>MVP status</h2>
+        <p>
+          MVP is the next milestone: a minimal demonstration showing identity binding + trace output on real interactions.
+        </p>
+        <ul>
+          <li>Public testnet: X (awareness + routing)</li>
+          <li>Private PoC: identity → action trace mapping</li>
+          <li>Next: publish demo + reproducible test</li>
+        </ul>
+      </div>
+
+      <div class="box span-6">
+        <h2>What we’re looking for</h2>
+        <p>Collaboration from researchers, builders, and governance communities.</p>
+        <ul>
+          <li>Agent frameworks integration</li>
+          <li>Audit / logging formats</li>
+          <li>Policy hooks & ethical constraints</li>
+          <li>Identity & permission modeling</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="contact" class="grid">
+      <div class="box span-12">
+        <h2>Contact</h2>
+        <p>
+          Add a simple contact channel. Email is enough for v1.
+        </p>
+        <div class="mono">Email: bosskeman@gmail.com
+X: @Muroyksl</div>
+      </div>
+    </section>
+
+    <footer>
+      <div>© <span id="y"></span> AI-ID Protocol • Built for clarity, governance, and trust.</div>
+      <div style="opacity:.8;">“Show your identity. State your intention. Declare your direction. Take responsibility."
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
